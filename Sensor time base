@@ -1,0 +1,58 @@
+library IEEE;
+use IEEE.STD_LOGIC_1164.all;
+use IEEE.numeric_std.all;
+
+		
+entity timebase is
+    port ( clk :in std_logic;
+            reset:in std_logic;
+            count_out:out std_logic_vector (19 downto 0) --1 miljoen bits 
+            );
+end entity timebase;
+
+architecture behavioural of timebase is
+      signal count, new_count : unsigned (19 downto 0);
+begin
+	 count_out <= std_logic_vector(count); 
+      process (clk)
+      begin
+              if (rising_edge (clk)) then
+                  if (reset = '1') then
+                        count <= (others => '0');
+                   else
+                        count <= new_count;
+                   end if;
+               end if;
+       end process;
+       
+       --calculating new count-value
+      process (count)
+       begin
+                  new_count <= count + 1;
+
+	if new_count = (to_unsigned(1000, 20)) then
+		new_count <= "00000000000000000000";
+	end if;
+       end process;
+
+
+	process(pulses)
+	begin
+	
+		if rising_edge(pulses) then
+			new_count_pulse <= count_pluse + 1;
+		end if;
+
+		if new_count <= 1000
+			if new_count_pulse => 205
+				MINE
+			else
+				NO MINE
+			end if;
+		else
+			new_count <= "0"
+			
+
+
+
+end architecture behavioural;
