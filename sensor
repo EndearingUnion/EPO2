@@ -1,0 +1,59 @@
+library IEEE;
+use IEEE.std_logic_1164.all;
+use ieee.numeric_std.all;
+
+
+entity sensor is
+	port(
+		frequency:	IN	std_logic_vector (13 downto 0); --10kHz
+		mine:		OUT	std_logic := '0';
+		reset:		IN 	std_logic;
+		clk:		IN	std_logic
+	     );
+end entity sensor;
+
+
+architecture behavior of sensor is
+  type statetype is (state_no_mine, state_mine);
+  signal state, next_state: statetype := state_no_mine;
+
+begin
+
+lbl_proces_clk: process(clk) is
+begin
+if (clk'event and clk = '1') then
+	if(reset = '1') then 
+		state <= state_no_mine;
+	else
+		state <= next_state;
+	end if;
+end if;
+
+end process;
+
+process(state, frequency)
+
+begin
+
+case state is
+when state_no_mine =>
+	mine <= '0';
+	 if frequency >= std_logic_vector(to_unsigned(100000, frequency'length)) then
+		next_state <= state_no_mine;
+	else
+		next_state<= state_mine;
+	end if;
+when state_mine =>
+	mine <= '1';
+	 if frequency >= std_logic_vector(to_unsigned(100000, frequency'length)) then
+		next_state <= state_no_mine;
+	else
+		next_state<= state_mine;
+	end if;
+end case;
+
+end process;
+
+end architecture;
+		
+		
