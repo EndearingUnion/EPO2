@@ -1,0 +1,45 @@
+library IEEE;
+use IEEE.std_logic_1164.all;
+use ieee.numeric_std.all;
+
+entity sensor_tb is
+end entity sensor_tb;
+
+architecture testbench of sensor_tb is
+  -- Component declaration for the DUT (Design Under Test)
+  component sensor is
+    port (
+      frequency:	IN	std_logic_vector (13 downto 0); --10kHz
+		mine:		OUT	std_logic := '0';
+		reset:		IN 	std_logic;
+		clk:		IN	std_logic
+	
+    );
+  end component sensor;
+
+  -- Signals for testbench
+  signal clk: std_logic := '0';
+  signal frequency_tb: std_logic_vector (13 downto 0) := (others => '0');
+  signal mine_tb: std_logic;
+ signal reset: std_logic;
+
+begin
+
+clk <=     '1' after 0 ns,
+                     '0' after 20 ns when clk /= '0' else '1' after 20 ns;
+
+frequency_tb <=  std_logic_vector(to_unsigned(100, frequency_tb'length)) after 0ns,
+	      std_logic_vector(to_unsigned(100011, frequency_tb'length)) after 20 ns;
+	     
+
+
+  dut: sensor
+    port map (
+      frequency => frequency_tb,
+      mine => mine_tb,
+	clk => clk,
+	reset => reset
+    );
+
+
+end architecture testbench;
