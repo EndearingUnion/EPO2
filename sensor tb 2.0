@@ -1,0 +1,43 @@
+library IEEE;
+use IEEE.STD_LOGIC_1164.all;
+use IEEE.numeric_std.all;
+
+entity sensor2tb is
+end entity sensor2tb;
+
+architecture structural of sensor2tb is
+
+        component Sensor2 is port (
+	clk    : in  std_logic;
+        frequency  : in  std_logic;
+        reset  : in  std_logic;
+        mines : out std_logic
+    );
+          end component Sensor2;
+          
+          signal clk: std_logic;
+          signal reset: std_logic;
+          signal frequency: std_logic;
+	  signal mines: std_logic;
+          
+begin
+          clk <=   	 '1' after 0 ns,
+                    	 '0' after 10 ns,
+			 '0' after 25 ns,
+                    	 '1' after 40 ns,
+			 '0' after 60 ns;
+          reset <=   	 '0' after 0 ns,
+                    	-- '0' after 20 ns,
+			 '1' after 20 ns,
+			 '0' after 30 ns;
+	 
+    
+
+lbl0:	Sensor2 port map (   clk => clk,
+                             reset => reset,
+			     frequency  => frequency,
+			     mines => mines
+			     
+);
+
+end architecture structural;
