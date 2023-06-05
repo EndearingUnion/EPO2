@@ -6,7 +6,7 @@ entity Sensor2 is
     port (
         clk    : in  std_logic;
         reset  : in  std_logic;
-	frequency: in std_logic;
+	frequency: in std_logic_vector (19 downto 0);
         mines : out std_logic
     );
 end entity Sensor2;
@@ -16,15 +16,16 @@ architecture behavioral of Sensor2 is
 
     signal pulse_counter : unsigned(31 downto 0) := (others => '0');
     signal counting_done : std_logic := '0';
+    signal freq : std_logic:= '0';
 
 begin
     -- Count the rising edges within the duration
-    process(clk)
+    process(freq)
     begin
         if reset = '1' then
             pulse_counter <= (others => '0');
             counting_done <= '0';
-        elsif rising_edge(clk) then
+        elsif rising_edge(freq) then
             if counting_done = '0' then
                 pulse_counter <= pulse_counter + 1;
                 if pulse_counter <= to_unsigned(pulses - 1, pulse_counter'length) then
@@ -34,6 +35,13 @@ begin
         end if;
     end process;
 
+    process(frequency)
+    begin
+    if frequency <= std_logic_vector(to_unsigned(100000, frequency'length)) then
+	freq <= '1';
+    else freq <= '0';
+ 	end if;
+    end process;
     -- Set the output based on the count result
     process(counting_done)
     begin
