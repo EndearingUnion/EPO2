@@ -19,6 +19,17 @@ architecture behavioral of Sensor2 is
     signal freq : std_logic:= '0';
 
 begin
+
+
+    process(frequency)
+    begin
+        if unsigned(frequency) < 10000 then -- Compare unsigned values
+            freq <= '1';
+        else
+            freq <= '0';
+        end if;
+    end process;
+
     -- Count the rising edges within the duration
     process(freq)
     begin
@@ -35,13 +46,6 @@ begin
         end if;
     end process;
 
-    process(frequency)
-    begin
-    if frequency <= std_logic_vector(to_unsigned(100000, frequency'length)) then
-	freq <= '1';
-    else freq <= '0';
- 	end if;
-    end process;
     -- Set the output based on the count result
     process(counting_done)
     begin
