@@ -9,7 +9,7 @@ architecture structural of sensor2tb is
 
         component Sensor2 is port (
 	clk    : in  std_logic;
-        frequency  : in  std_logic;
+        frequency  : in  std_logic_vector (19 downto 0);
         reset  : in  std_logic;
         mines : out std_logic
     );
@@ -17,21 +17,23 @@ architecture structural of sensor2tb is
           
           signal clk: std_logic;
           signal reset: std_logic;
-          signal frequency: std_logic;
+          signal frequency: std_logic_vector (19 downto 0);
 	  signal freq: std_logic;
 	  signal mines: std_logic;
           
 begin
-          frequency <=   "10101011111000" after 0 ns,
-                    	 "10001100101000" after 10 ns,
-			 "10001100101000" after 25 ns,
-                    	 "10101011111000" after 40 ns,
-			 "10001100101000" after 60 ns;
-          reset <=   	 '0' after 0 ns,
+    	 frequency <= 	 std_logic_vector(to_unsigned(11000, frequency'length)) after 0 ms,
+                 	 std_logic_vector(to_unsigned(9000, frequency'length)) after 10 ms,
+                	 std_logic_vector(to_unsigned(9000, frequency'length)) after 25 ms,
+                 	 std_logic_vector(to_unsigned(11000, frequency'length)) after 40 ms,
+                 	 std_logic_vector(to_unsigned(9000, frequency'length)) after 60 ms;
+
+		 
+          reset <=   	 '0' after 0 ms,
                     	-- '0' after 20 ns,
-			 '1' after 20 ns,
-			 '0' after 30 ns;
-	 
+			 '1' after 20 ms,
+			 '0' after 40 ms;
+
     
 
 lbl0:	Sensor2 port map (   clk => clk,
