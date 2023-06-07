@@ -24,7 +24,7 @@ begin
     begin
     	if reset = '1' then
 		pulse_nr <= 0;
-		cut_time <= 0;
+		cur_time <= 0;
         elseif rising_edge(clk) then
             if cur_time = time_meas then
                 if pulse_nr > wanted_pulses then
@@ -43,6 +43,7 @@ begin
                 end if;
             end if;
         end if;
+	end if;
     end process;
 
 end architecture Behavioral;
