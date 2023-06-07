@@ -35,7 +35,7 @@ begin
                 cur_time  <= 0;
             else
                 cur_time <= cur_time + 1;
-                if input = '1' then
+                if rising_edge(input) then
                     pulse_nr <= pulse_nr + 1;
                 end if;
             end if;
