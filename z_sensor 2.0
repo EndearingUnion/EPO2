@@ -6,7 +6,6 @@ entity Sensor2 is
     port (
         clk    : in  std_logic;
         reset  : in  std_logic;
-	input : 
 	--frequency: in std_logic_vector (19 downto 0);
         mines : out std_logic
     );
