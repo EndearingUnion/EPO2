@@ -1,0 +1,45 @@
+library ieee;
+use ieee.std_logic_1164.all;
+use ieee.numeric_std.all;
+
+entity Sensor2 is
+    port (
+        clk   : in  std_logic;
+        input : in  std_logic;
+	reset : in std_logic;
+        mines: out std_logic
+    );
+end entity Sensor2;
+
+architecture Behavioral of Sensor2 is
+    constant time_meas : integer := 20; --measure time
+    constant wanted_pulses  : natural := 205;
+
+    signal pulse_nr : natural range 0 to wanted_pulses := 0;
+    signal cur_time  : integer range 0 to time_meas := 0;
+
+begin
+
+    process (clk)
+    begin
+        if rising_edge(clk) then
+            if cur_time = time_meas then
+                if pulse_nr > wanted_pulses then
+                    mines <= '0';
+                else
+                    mines <= '1';
+                end if;
+
+                -- Reset counters
+                pulse_nr <= 0;
+                cur_time  <= 0;
+            else
+                cur_time <= cur_time + 1;
+                if input = '1' then
+                    pulse_nr <= pulse_nr + 1;
+                end if;
+            end if;
+        end if;
+    end process;
+
+end architecture Behavioral;
