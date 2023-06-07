@@ -22,7 +22,10 @@ begin
 
     process (clk)
     begin
-        if rising_edge(clk) then
+    	if reset = '1' then
+		pulse_nr <= 0;
+		cut_time <= 0;
+        elseif rising_edge(clk) then
             if cur_time = time_meas then
                 if pulse_nr > wanted_pulses then
                     mines <= '0';
